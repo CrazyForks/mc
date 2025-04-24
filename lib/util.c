@@ -301,19 +301,27 @@ fake_name_quote (const char *s, gboolean quote_percent)
 
 /* --------------------------------------------------------------------------------------------- */
 /**
- * path_trunc() is the same as str_trunc() but
- * it deletes possible password from path for security
+ * path_trunc() is the same as str_trunc() but it deletes possible password from path for security
  * reasons.
+ *
+ * @param path file path to trancate
+ * @param trunc_width width (in characters) of truncation result. If -1, full path will be kept.
+ *
+ * @returns pointer to trancated path. It points to the internal static buffer, do not call
+            g_free() to free it.
  */
 
 const char *
-path_trunc (const char *path, size_t trunc_len)
+path_trunc (const char *path, const size_t trunc_width)
 {
     vfs_path_t *vpath;
-    const char *ret;
 
     vpath = vfs_path_from_str_flags (path, VPF_STRIP_PASSWORD);
-    ret = str_trunc (vfs_path_as_str (vpath), trunc_len);
+
+    const char *p = vfs_path_as_str (vpath);
+    const size_t width = trunc_width == (size_t) (-1) ? (size_t) str_term_width1 (p) : trunc_width;
+    const char *ret = str_trunc (p, width);
+
     vfs_path_free (vpath, TRUE);
 
     return ret;
