@@ -650,15 +650,17 @@ str_is_valid_char (const char *ch, size_t size)
 int
 str_term_width1 (const char *text)
 {
-    return used_class.term_width1 (text);
+    // TODO: FIXME: reduce bitwidth size_t -> int
+    return (int) used_class.term_width1 (text);
 }
 
 /* --------------------------------------------------------------------------------------------- */
 
 int
-str_term_width2 (const char *text, size_t length)
+str_term_width2 (const char *text, const ssize_t width)
 {
-    return used_class.term_width2 (text, length);
+    // TODO: FIXME: reduce bitwidth size_t -> int
+    return (int) used_class.term_width2 (text, width);
 }
 
 /* --------------------------------------------------------------------------------------------- */
