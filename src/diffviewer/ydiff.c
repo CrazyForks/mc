@@ -3305,7 +3305,7 @@ dview_get_title (const WDialog *h, const ssize_t width)
     dview = (const WDiff *) widget_find_by_type (CONST_WIDGET (h), dview_callback);
     width1 = (width - str_term_width1 (_ ("Diff:")) - strlen (modified) - 3) / 2;
     if (width1 < 0)
-        width1 = width / 2; // FIXME
+        width1 = width / 2;  // FIXME
 
     title = g_string_sized_new (width);
     g_string_append (title, _ ("Diff:"));
