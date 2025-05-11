@@ -443,12 +443,12 @@ static const struct term_form *
 str_utf8_make_make_term_form (const char *text, const ssize_t width)
 {
     static struct term_form result;
-    ssize_t width1;
+    size_t width1;
     gunichar uni;
     size_t left;
     char *actual;
 
-    width1 = width < 0 ? -1 : width;
+    width1 = width < 0 ? SIZE_MAX : (size_t) width;
     result.text[0] = '\0';
     result.width = 0;
     result.compose = FALSE;
@@ -469,7 +469,7 @@ str_utf8_make_make_term_form (const char *text, const ssize_t width)
         }
     }
 
-    while (width1 != 0 && text[0] != '\0')
+    for (; width1 != 0 && text[0] != '\0'; width1--)
     {
         uni = g_utf8_get_char_validated (text, -1);
         if ((uni != (gunichar) (-1)) && (uni != (gunichar) (-2)))
@@ -506,9 +506,6 @@ str_utf8_make_make_term_form (const char *text, const ssize_t width)
             actual += repl_len;
             result.width++;
         }
-
-        if (width1 != -1)
-            width1--;
     }
     actual[0] = '\0';
 
