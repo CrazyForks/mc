@@ -462,8 +462,7 @@ str_utf8_make_make_term_form (const char *text, const ssize_t width)
     /* check if text start with combining character,
      * add space at begin in this case */
     uni = g_utf8_get_char_validated (text, -1);
-    if ((uni != (gunichar) (-1)) && (uni != (gunichar) (-2))
-        && str_unichar_iscombiningmark (uni))
+    if ((uni != (gunichar) (-1)) && (uni != (gunichar) (-2)) && str_unichar_iscombiningmark (uni))
     {
         actual[0] = ' ';
         actual++;
