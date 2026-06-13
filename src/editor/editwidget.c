@@ -1103,6 +1103,8 @@ edit_mouse_callback (Widget *w, mouse_msg_t msg, mouse_event_t *event)
         widget_select (w);
         edit_update_curs_row (edit);
         edit_update_curs_col (edit);
+        if (event->count == GPM_DOUBLE)
+            edit->word_highlight = TRUE;
 
         if (edit->fullscreen == 0)
         {
@@ -1131,11 +1133,14 @@ edit_mouse_callback (Widget *w, mouse_msg_t msg, mouse_event_t *event)
             }
         }
 
-        MC_FALLTHROUGH;  // to start/stop text selection
+        edit_update_cursor (edit, event);
+        edit_total_update (edit);
+        break;
 
     case MSG_MOUSE_UP:
         edit_update_cursor (edit, event);
         edit_total_update (edit);
+        edit->word_highlight = FALSE;
         break;
 
     case MSG_MOUSE_CLICK:
@@ -1148,18 +1153,6 @@ edit_mouse_callback (Widget *w, mouse_msg_t msg, mouse_event_t *event)
             else if (edit->fullscreen == 0 && event->count == GPM_DOUBLE)
                 // double click on top line (toggle fullscreen)
                 edit_toggle_fullscreen (edit);
-        }
-        else if (event->count == GPM_DOUBLE)
-        {
-            // double click
-            edit_mark_current_word_cmd (edit);
-            edit_total_update (edit);
-        }
-        else if (event->count == GPM_TRIPLE)
-        {
-            // triple click: works in GPM only, not in xterm
-            edit_mark_current_line_cmd (edit);
-            edit_total_update (edit);
         }
         break;
 

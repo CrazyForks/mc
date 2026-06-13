@@ -876,6 +876,7 @@ xmouse_get_event (Gpm_Event *ev, gboolean extended)
             ev->buttons = 0;
             break;
         }
+        ev->type |= (GPM_SINGLE << clicks);
         last_btn = ev->buttons;
     }
 }
