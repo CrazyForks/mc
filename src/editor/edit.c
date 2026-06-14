@@ -3151,6 +3151,11 @@ eval_marks (WEdit *edit, off_t *start_mark, off_t *end_mark)
             *start_mark = MIN (edit->mark1, word_start);
             *end_mark = MAX (end_mark_curs, word_end);
         }
+        else if (edit->line_highlight)
+        {
+            *start_mark = MIN (edit->mark1, edit_buffer_get_current_bol (&edit->buffer));
+            *end_mark = MAX (end_mark_curs, edit_buffer_get_current_eol (&edit->buffer));
+        }
         else
         {
             *start_mark = MIN (edit->mark1, end_mark_curs);
@@ -3208,6 +3213,11 @@ edit_mark_cmd (WEdit *edit, gboolean unmark)
         edit->end_mark_curs = -1;
         if (edit->word_highlight)
             edit_get_current_word_extents (edit, &m1, &edit->end_mark_curs);
+        else if (edit->line_highlight)
+        {
+            m1 = edit_buffer_get_current_bol (&edit->buffer);
+            edit->end_mark_curs = edit_buffer_get_current_eol (&edit->buffer);
+        }
         edit_set_markers (edit, m1, -1, edit->curs_col + edit->over_col,
                           edit->curs_col + edit->over_col);
         edit->force |= REDRAW_PAGE;

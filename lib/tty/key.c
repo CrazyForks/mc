@@ -822,7 +822,6 @@ xmouse_get_event (Gpm_Event *ev, gboolean extended)
             }
             ev->buttons = 0;
             last_btn = 0;
-            clicks = 0;
         }
         else
         {

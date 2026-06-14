@@ -1103,8 +1103,11 @@ edit_mouse_callback (Widget *w, mouse_msg_t msg, mouse_event_t *event)
         widget_select (w);
         edit_update_curs_row (edit);
         edit_update_curs_col (edit);
+
         if (event->count == GPM_DOUBLE)
             edit->word_highlight = TRUE;
+        else if (event->count == GPM_TRIPLE)
+            edit->line_highlight = TRUE;
 
         if (edit->fullscreen == 0)
         {
@@ -1141,6 +1144,7 @@ edit_mouse_callback (Widget *w, mouse_msg_t msg, mouse_event_t *event)
         edit_update_cursor (edit, event);
         edit_total_update (edit);
         edit->word_highlight = FALSE;
+        edit->line_highlight = FALSE;
         break;
 
     case MSG_MOUSE_CLICK:
